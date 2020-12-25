@@ -1,11 +1,11 @@
 import React from "react";
 import { shallowWithTheme } from "utils/testUtils";
 
-import SearchBar from "components/SearchBar";
+import Weather from "components/Weather";
 
-describe("Component: SearchBar", () => {
+describe("Component: Weather", () => {
   it("Render match Snapshot", () => {
-    const wrapper = shallowWithTheme(<SearchBar />);
+    const wrapper = shallowWithTheme(<Weather />);
     expect(wrapper).toMatchSnapshot();
   });
 });

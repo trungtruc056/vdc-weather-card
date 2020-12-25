@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
 border-radius: 50%;
-border: 4px solid #fff;
+border: 4px solid ${(props) => props.theme.colors.white};
 border-top: 4px solid ${(props) => props.theme.colors.blueLoader};
 border-bottom: 4px solid ${(props) => props.theme.colors.blueLoader};
 width: 1.5rem;
@@ -24,7 +24,7 @@ animation: spin 1s linear infinite;
 
 ${(props) =>
     props.size === 'large' && `
-    border: 8px solid #fff;
+    border: 8px solid ${props.theme.colors.white};
     border-top: 8px solid ${props.theme.colors.blueLoader};
     border-bottom: 8px solid ${props.theme.colors.blueLoader};
     width: 2.5rem;

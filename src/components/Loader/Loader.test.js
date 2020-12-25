@@ -1,11 +1,12 @@
 import React from "react";
+import "jest-styled-components";
 import { shallowWithTheme } from "utils/testUtils";
 
-import SearchBar from "components/SearchBar";
+import Loader from "components/Loader";
 
-describe("Component: SearchBar", () => {
+describe("Component: Loader", () => {
   it("Render match Snapshot", () => {
-    const wrapper = shallowWithTheme(<SearchBar />);
+    const wrapper = shallowWithTheme(<Loader />);
     expect(wrapper).toMatchSnapshot();
   });
 });
