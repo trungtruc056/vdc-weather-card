@@ -1,3 +1,19 @@
+### Weather forecast with Metaweather API
+
+### [LIVE DEMO](https://trungtruc056.github.io/weather-forecast/)
+
+## Pictures
+
+### Light Theme
+![Light Theme](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-light.jpg)
+
+### Dark Theme
+![Dark Theme](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-dark.jpg)
+
+### Mobile
+
+![Mobile](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-mobile.jpg)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

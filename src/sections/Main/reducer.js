@@ -55,7 +55,7 @@ export const getCurrentWoeid = async (dispatch, param) => {
 export const getCurrentPlace = async (dispatch, param) => {
   dispatch({ type: TYPE.FETCH_CUR_PLACE_PROCESSING });
   let data = [];
-  data = await getWeatherByWoeid(param).then(data => data.data.consolidated_weather);
+  data = await getWeatherByWoeid(param).then(data => data.data.consolidated_weather.slice(0, 5));
   dispatch({ type: TYPE.FETCH_CUR_PLACE_SUCCESS, payload: data });
 }
 
