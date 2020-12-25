@@ -8,7 +8,7 @@ const apiClient = axios.create({
 });
 
 const GET_WOEID = `${BASE_API_URL}/location/search/?query=`;
-const GET_WEATHER_BY_WOEID = `${BASE_API_URL}/location/`;
+const GET_WEATHER_BY_WOEID = `${BASE_API_URL}/location`;
 
 export const getWoeid = (location) =>
   apiClient
@@ -20,7 +20,7 @@ export const getWoeid = (location) =>
 
 export const getWeatherByWoeid = (woeid = 2487956) => {
   return apiClient
-    .get(`${GET_WEATHER_BY_WOEID}/${woeid}`)
+    .get(`${GET_WEATHER_BY_WOEID}/${woeid}/`)
     .then((response) => response)
     .catch(function (error) {
       throw error;

@@ -21,8 +21,8 @@ const Main = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [curWoeid, setCurWoeid] = useState({});
-  const [curPlace, setCurPlace] = useState({});
+  const [curWoeid, setCurWoeid] = useState(null);
+  const [curPlace, setCurPlace] = useState(null);
   const debouncedSearchValue = useDebounce(searchValue, 300);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Main = () => {
     setIsSearching(false);
     setSuggestList([]);
     setIsSubmit(true);
-    setCurWoeid(item.id);
+    setCurWoeid(item.woeid);
   };
 
   return (
