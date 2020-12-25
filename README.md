@@ -5,14 +5,14 @@
 ## Pictures
 
 ### Light Theme
-![Light Theme](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-light.jpg)
+![Light Theme](https://github.com/trungtruc056/weather-forecast/blob/main/screenshot-light.jpg)
 
 ### Dark Theme
-![Dark Theme](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-dark.jpg)
+![Dark Theme](https://github.com/trungtruc056/weather-forecast/blob/main/screenshot-dark.jpg)
 
 ### Mobile
 
-![Mobile](https://github.com/trungtruc056/vdc-weather-card/blob/master/screenshot-mobile.jpg)
+![Mobile](https://github.com/trungtruc056/weather-forecast/blob/main/screenshot-mobile.jpg)
 
 # Getting Started with Create React App
 
