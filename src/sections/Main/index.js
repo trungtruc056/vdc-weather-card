@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import useDebounce from "hooks/useDebounce";
 import Logo from "components/Logo";
 import SearchBar from "components/SearchBar";
-import { getWoeid, getWeatherByWoeid } from "apis/metaweather";
+import Weather from "components/Weather";
+import { getCurrentPlace, getCurrentWoeid, getSuggestList, initialState, resetSuggestList, updateSearching, weatherReducer } from "./reducer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -15,29 +16,32 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+const SearchWrapper = styled.div`
+  margin-bottom: 2.5rem;
+  width: 100%;
+`
+
 const Main = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [suggestList, setSuggestList] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [curWoeid, setCurWoeid] = useState(null);
-  const [curPlace, setCurPlace] = useState(null);
-  const debouncedSearchValue = useDebounce(searchValue, 300);
+  const debouncedSearchValue = useDebounce(searchValue, 200);
+  const [state, dispatch] = useReducer(weatherReducer, initialState);
 
   useEffect(() => {
     if (debouncedSearchValue && !isSubmit) {
-      setIsSearching(true);
-      getWoeid(debouncedSearchValue).then((data) => setSuggestList(data.data));
+      updateSearching(dispatch, true);
+      getSuggestList(dispatch, debouncedSearchValue);
     } else {
-      setIsSearching(false);
-      setSuggestList([]);
+      updateSearching(dispatch, false);
+      resetSuggestList(dispatch);
     }
   }, [debouncedSearchValue, isSubmit]);
 
   useEffect(() => {
-    curWoeid && getWeatherByWoeid(curWoeid).then((data) => setCurPlace(data));
-  }, [curWoeid]);
+    state.curWoeid &&
+      getCurrentPlace(dispatch, state.curWoeid);
+  }, [state.curWoeid]);
 
   const handleSearching = (e) => {
     setSearchValue(e.target.value);
@@ -48,10 +52,10 @@ const Main = () => {
     if (searchValue) {
       if (e.keyCode === 13) {
         // Enter
-        setSearchValue(suggestList[activeIndex].title);
+        setSearchValue(state.suggestList[activeIndex].title);
         setActiveIndex(0);
-        setIsSearching(false);
-        setSuggestList([]);
+        updateSearching(dispatch, false);
+        resetSuggestList(dispatch);
         setIsSubmit(true);
       } else if (e.keyCode === 38) {
         // key Up
@@ -61,7 +65,7 @@ const Main = () => {
         setActiveIndex(activeIndex - 1);
       } else if (e.keyCode === 40) {
         // key Down
-        if (activeIndex === suggestList.length - 1) {
+        if (activeIndex === state.suggestList.length - 1) {
           return;
         }
         setActiveIndex(activeIndex + 1);
@@ -72,24 +76,28 @@ const Main = () => {
   const handleSelectedItem = (item) => {
     setSearchValue(item.title);
     setActiveIndex(0);
-    setIsSearching(false);
-    setSuggestList([]);
+    updateSearching(dispatch, false);
+    resetSuggestList(dispatch);
     setIsSubmit(true);
-    setCurWoeid(item.woeid);
+    getCurrentWoeid(dispatch, item.woeid);
   };
 
   return (
     <Wrapper>
       <Logo />
-      <SearchBar
-        onSearching={handleSearching}
-        onKeyDown={handleOnKeyDown}
-        selectedItem={handleSelectedItem}
-        isSearching={isSearching}
-        suggestList={suggestList}
-        activeIndex={activeIndex}
-        searchValue={searchValue}
-      />
+      <SearchWrapper>
+        <SearchBar
+          onSearching={handleSearching}
+          onKeyDown={handleOnKeyDown}
+          selectedItem={handleSelectedItem}
+          isSearching={state.isSearching}
+          suggestList={state.suggestList}
+          activeIndex={activeIndex}
+          searchValue={searchValue}
+          isLoading={state.isLoading}
+        />
+      </SearchWrapper>
+      <Weather data={state.curPlace} isLoading={state.isLoadWeather} />
     </Wrapper>
   );
 };

@@ -1,8 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-    body {
-        font-size: 1rem;
+    html {
+      font-size: 10px;
+
+      @media (min-width: 768px) {
+        font-size: 16px;
+      }
     }
 
     ul {

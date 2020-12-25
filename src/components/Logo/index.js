@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   margin-bottom: 2rem;
 
   @media screen and (min-width: ${(props) =>
-      props.theme.responsive.tabletS}rem) {
+    props.theme.responsive.tabletS}rem) {
     margin-top: 4.375rem;
   }
 `;

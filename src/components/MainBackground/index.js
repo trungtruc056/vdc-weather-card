@@ -14,7 +14,7 @@ const Background = styled.div`
   margin: 0;
   padding: 0;
   top: 0;
-  position: fixed;
+  min-height: 100vh;
 `;
 
 const BackgroundComponent = (props) => {
