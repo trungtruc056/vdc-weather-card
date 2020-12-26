@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   line-height: 5rem;
   text-align: center;
   margin-bottom: 2rem;
+  margin-top: 3rem;
 
   @media screen and (min-width: ${(props) =>
     props.theme.responsive.tabletS}rem) {
