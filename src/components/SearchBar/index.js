@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 const SearchInput = styled.input`
   position: relative;
   background-color: ${(props) => props.theme.colors.bgPrimary};
-  height: 2.5rem;
+  height: 3rem;
   border: none;
   width: 80%;
   font-size: ${(props) => props.theme.font.fontSizeS};
@@ -49,7 +49,6 @@ const SearchInput = styled.input`
 
   @media screen and (min-width: ${(props) =>
     props.theme.responsive.tabletS}rem) {
-    height: 3rem;
     width: 31.25rem;
   }
 `;
@@ -70,6 +69,12 @@ const SuggestListWrapper = styled.div`
       top: 3rem;
   }
 `;
+
+const LoaderWrapper = styled.div`
+  position: absolute
+  right: 0;
+  z-index: 1000
+`
 
 const SearchBar = (props) => {
   const {
@@ -93,7 +98,7 @@ const SearchBar = (props) => {
         onKeyDown={onKeyDown}
         value={searchValue}
       />
-      {isLoading && <Loader />}
+      {isLoading && <LoaderWrapper><Loader /></LoaderWrapper>}
       {isSearching && suggestList.length > 0 && (
         <SuggestListWrapper>
           <SuggestList
