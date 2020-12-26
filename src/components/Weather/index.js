@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { getDayOfWeek } from "utils/getToday";
+import { getIconWeather } from "apis/metaweather";
 
 import humidity from 'assets/icons/humidity.svg'
 import wind from 'assets/icons/wind.svg'
-import { getIconWeather } from "apis/metaweather";
-import Loader from "components/Loader";
+import noData from 'assets/icons/no-data.svg'
 
-const Wrapper = styled.ul`
+export const WeatherWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,12 +17,11 @@ const Wrapper = styled.ul`
   border-radius: 1rem;
   width: 100%;
   margin-bottom: 3rem;
-  min-height: 37.5rem;
+  min-height: 33rem;
 
   @media screen and (min-width: ${(props) =>
     props.theme.responsive.tabletM}rem) {
       width: 60%;
-      min-height: 37.5rem;
   }
 `;
 
@@ -94,29 +93,19 @@ const IconWrapper = styled.div`
   }
 `
 
-const Skeleton = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => props.theme.colors.bgPrimary};
-  border-radius: 1rem;
-  width: 100%;
-  margin-bottom: 3rem;
-  min-height: 37.5rem;
-
-@media screen and (min-width: ${(props) =>
-    props.theme.responsive.tabletM}rem) {
-    width: 60%;
-    min-height: 37.5rem;
-  }
+const IconNodata = styled.img`
+  width: 10rem;
 `
 
-const Weather = ({ data, isLoading }) => {
+const NoDataText = styled.p`
+  font-size: 1.5rem;
+  color: ${(props) => props.theme.colors.textPrimary};
+`
+
+const Weather = ({ data }) => {
   return (
-    isLoading ? <Skeleton><Loader size="large" /></Skeleton> :
-      data &&
-      <Wrapper>
+    data && data.length > 0 ?
+      <WeatherWrapper>
         {data.map(item => (
           <Item key={item.id}>
             <ItemContent>
@@ -141,17 +130,19 @@ const Weather = ({ data, isLoading }) => {
             </ItemContent>
           </Item>
         ))}
-      </Wrapper>
+      </WeatherWrapper>
+      : <WeatherWrapper>
+        <IconNodata src={noData} alt="No data" />
+        <NoDataText>No data</NoDataText>
+      </WeatherWrapper>
   )
 };
 
 Weather.propTypes = {
-  isLoading: PropTypes.bool,
   data: PropTypes.array,
 };
 
 Weather.defaultProps = {
-  isLoading: false,
   data: [],
 };
 

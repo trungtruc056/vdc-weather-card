@@ -3,8 +3,12 @@ import styled from "styled-components";
 import useDebounce from "hooks/useDebounce";
 import Logo from "components/Logo";
 import SearchBar from "components/SearchBar";
-import Weather from "components/Weather";
-import { getCurrentPlace, getCurrentWoeid, getSuggestList, initialState, resetSuggestList, updateSearching, weatherReducer } from "./reducer";
+import Weather, { WeatherWrapper } from "components/Weather";
+import {
+  getCurrentPlace, getCurrentWoeid, getSuggestList, initialState,
+  resetSuggestList, resetCurPlace, updateSearching, weatherReducer
+} from "./reducer";
+import Loader from "components/Loader";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -25,7 +29,7 @@ const Main = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const debouncedSearchValue = useDebounce(searchValue, 200);
+  const debouncedSearchValue = useDebounce(searchValue, 300);
   const [state, dispatch] = useReducer(weatherReducer, initialState);
 
   useEffect(() => {
@@ -49,10 +53,11 @@ const Main = () => {
   };
 
   const handleOnKeyDown = (e) => {
-    if (searchValue) {
+    if (state.suggestList && state.suggestList.length > 0) {
       if (e.keyCode === 13) {
         // Enter
         setSearchValue(state.suggestList[activeIndex].title);
+        getCurrentPlace(dispatch, state.suggestList[activeIndex].woeid);
         setActiveIndex(0);
         updateSearching(dispatch, false);
         resetSuggestList(dispatch);
@@ -69,6 +74,10 @@ const Main = () => {
           return;
         }
         setActiveIndex(activeIndex + 1);
+      }
+    } else {
+      if (e.keyCode === 13) {
+        resetCurPlace(dispatch);
       }
     }
   };
@@ -97,7 +106,10 @@ const Main = () => {
           isLoading={state.isLoading}
         />
       </SearchWrapper>
-      <Weather data={state.curPlace} isLoading={state.isLoadWeather} />
+      {state.isLoadWeather ?
+        <WeatherWrapper><Loader size="large" /></WeatherWrapper>
+        : state.curPlace
+        && <Weather data={state.curPlace} isLoading={state.isLoadWeather} />}
     </Wrapper>
   );
 };

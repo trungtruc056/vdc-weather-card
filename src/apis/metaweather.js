@@ -17,6 +17,7 @@ export const getWoeid = (location) =>
     .get(GET_WOEID_URL + location)
     .then((response) => response)
     .catch(function (error) {
+      console.error(error);
       throw error;
     });
 
@@ -25,6 +26,7 @@ export const getWeatherByWoeid = (woeid) => {
     .get(`${GET_WEATHER_BY_WOEID_URL}/${woeid}`)
     .then((response) => response)
     .catch(function (error) {
+      console.error(error);
       throw error;
     });
 };

@@ -9,6 +9,7 @@ export const TYPE = {
   CURRENT_WOEID: 'CURRENT_WOEID',
   FETCH_CUR_PLACE_PROCESSING: 'FETCH_CUR_PLACE_PROCESSING',
   FETCH_CUR_PLACE_SUCCESS: 'FETCH_CUR_PLACE_SUCCESS',
+  RESET_CUR_PLACE: 'RESET_CUR_PLACE'
 }
 
 export const initialState = {
@@ -27,14 +28,16 @@ export function weatherReducer(state, action) {
     case TYPE.FETCH_SUGGEST_LIST_SUCCESS:
       return { ...state, suggestList: action.payload, isLoading: false };
     case TYPE.RESET_SUGGEST_LIST:
-      return { ...state, suggestList: action.payload, isLoading: false }
+      return { ...state, suggestList: action.payload, isLoading: false };
     case TYPE.UPDATE_SEARCHING:
-      return { ...state, isSearching: action.payload }
+      return { ...state, isSearching: action.payload };
     case TYPE.CURRENT_WOEID:
-      return { ...state, curWoeid: action.payload }
+      return { ...state, curWoeid: action.payload };
     case TYPE.FETCH_CUR_PLACE_PROCESSING:
-      return { ...state, curPlace: action.payload, isLoadWeather: true }
+      return { ...state, curPlace: action.payload, isLoadWeather: true };
     case TYPE.FETCH_CUR_PLACE_SUCCESS:
+      return { ...state, curPlace: action.payload, isLoadWeather: false };
+    case TYPE.RESET_CUR_PLACE:
       return { ...state, curPlace: action.payload, isLoadWeather: false }
     default:
       return state;
@@ -44,18 +47,25 @@ export function weatherReducer(state, action) {
 export const getSuggestList = async (dispatch, param) => {
   dispatch({ type: TYPE.FETCH_SUGGEST_LIST_PROCESSING });
   let data = [];
-  data = await getWoeid(param).then(data => data.data.slice(0, 8));
+  data = await getWoeid(param)
+    .then(data => data.data.slice(0, 8))
+    .catch(error => console.error(error));
   dispatch({ type: TYPE.FETCH_SUGGEST_LIST_SUCCESS, payload: data });
 }
 
-export const getCurrentWoeid = async (dispatch, param) => {
+export const getCurrentWoeid = (dispatch, param) => {
   dispatch({ type: TYPE.CURRENT_WOEID, payload: param });
 }
 
 export const getCurrentPlace = async (dispatch, param) => {
   dispatch({ type: TYPE.FETCH_CUR_PLACE_PROCESSING });
   let data = [];
-  data = await getWeatherByWoeid(param).then(data => data.data.consolidated_weather.slice(0, 5));
+  data = await getWeatherByWoeid(param)
+    .then(data => {
+      const { consolidated_weather } = data.data;
+      return consolidated_weather.slice(0, 5);
+    })
+    .catch(error => console.error(error));
   dispatch({ type: TYPE.FETCH_CUR_PLACE_SUCCESS, payload: data });
 }
 
@@ -65,4 +75,8 @@ export const updateSearching = (dispatch, status) => {
 
 export const resetSuggestList = (dispatch) => {
   dispatch({ type: TYPE.RESET_SUGGEST_LIST, payload: [] });
+}
+
+export const resetCurPlace = (dispatch) => {
+  dispatch({ type: TYPE.RESET_CUR_PLACE, payload: [] });
 }
