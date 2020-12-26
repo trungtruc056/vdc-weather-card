@@ -11,6 +11,6 @@ describe("Component: Logo", () => {
 
   it("Render match with text", () => {
     const wrapper = shallowWithTheme(<Logo />);
-    expect(wrapper.text()).toContain("Ryul");
+    expect(wrapper.text()).toContain("Weather Card");
   });
 });
