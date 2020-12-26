@@ -2,7 +2,7 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
     html {
-      font-size: 12px;
+      font-size: 10px;
 
       @media (min-width: 768px) {
         font-size: 16px;
